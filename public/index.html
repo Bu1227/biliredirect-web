@@ -196,7 +196,7 @@
         
         <div class="input-group">
             <label for="videoUrl">影片網址:</label>
-            <input type="url" id="videoUrl" placeholder="請輸入 B站影片網址，例如: https://www.bilibili.com/video/BV1xx411c7mD">
+            <input type="url" id="videoUrl" placeholder="請輸入 B站 影片網址，例如: https://www.bilibili.com/video/BV1xxxxxxxxx">
         </div>
 
         <div class="btn-group">
@@ -278,14 +278,19 @@
                         <p><strong>✅ 解析成功！</strong></p>
                         <p>影片標題: ${data.title || '未知'}</p>
                         <p>影片長度: ${data.duration || '未知'}</p>
-                        <p>分辨率: ${data.quality || '未知'}</p>
+                        <p>畫質: ${data.quality || '未知'}</p>
                         <div class="url-display">
                             <strong>CDN 播放網址:</strong><br>
                             ${data.cdnUrl}
                         </div>
-                        <button class="btn-primary" onclick="copyToClipboard('${data.cdnUrl}')" style="margin-top: 10px; width: 100%;">
-                            📋 複製網址
-                        </button>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button class="btn-primary" onclick="copyToClipboard('${data.cdnUrl}')" style="flex: 1;">
+                                📋 複製網址
+                            </button>
+                            <button class="btn-primary" onclick="openInNewTab('${data.cdnUrl}')" style="flex: 1;">
+                                ➕ 在新分頁開啟
+                            </button>
+                        </div>
                     `;
                     showResult('🎉 解析完成', resultHtml);
                 } else {
@@ -310,6 +315,18 @@
                 document.body.removeChild(textArea);
                 alert('✅ 網址已複製到剪貼板！');
             });
+        }
+
+        function openInNewTab(url) {
+            // 在新分頁開啟解析好的 CDN 連結
+            const newWindow = window.open(url, '_blank');
+            if (newWindow) {
+                newWindow.focus();
+            } else {
+                // 如果彈出視窗被阻擋，提供替代方案
+                alert('❌ 彈出視窗被瀏覽器阻擋！請先複製網址然後手動開啟新分頁貼上。');
+                copyToClipboard(url);
+            }
         }
 
         // 回車鍵觸發解析

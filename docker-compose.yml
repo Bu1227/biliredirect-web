@@ -1,0 +1,13 @@
+services:
+  biliredirect:
+    image: node:22
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - 0.0.0.0:30000:30000
+    command: bash -c "npm install && node index.js"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    container_name: biliredirect
